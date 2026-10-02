@@ -28,6 +28,7 @@
   .badge.ok { background: #e5f9ec; color: #12853a; font-weight: 600; }
   .badge.no { background: #f5f5f7; color: #a1a1a6; }
   .badge.err { background: #fdecea; color: #c22e2e; }
+  .buybtn { display: block; text-align: center; margin-top: 10px; background: #0071e3; color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 10px; border-radius: 10px; }
   .note { padding: 0 16px 30px; font-size: 12px; color: #a1a1a6; line-height: 1.7; }
   .loading { text-align: center; padding: 60px 20px; color: #a1a1a6; }
 </style>
@@ -53,6 +54,13 @@
 </div>
 <script>
 let CONFIG = null, DATA = null, currentModel = 0;
+// 各机型官网购买页（Pro 和 Pro Max 共用一个购买页）
+const BUY_URLS = {
+  'iphone-duo': 'https://www.apple.com.cn/shop/buy-iphone/iphone-duo',
+  'iphone-18-pro': 'https://www.apple.com.cn/shop/buy-iphone/iphone-18-pro',
+  'iphone-18-pro-max': 'https://www.apple.com.cn/shop/buy-iphone/iphone-18-pro',
+  'iphone-air': 'https://www.apple.com.cn/shop/buy-iphone/iphone-air'
+};
 async function loadData() {
   try {
     const [c, d] = await Promise.all([
@@ -96,10 +104,15 @@ function renderList() {
     const card = document.createElement('div');
     card.className = 'card';
     const badges = DATA.results.map(s => statusBadge(s, p.part)).join('');
+    const hasStock = DATA.results.some(s => !s.error &&
+      s.parts[p.part] && s.parts[p.part].display === 'available');
+    const buyBtn = hasStock
+      ? '<a class="buybtn" href="' + (BUY_URLS[model.id] || 'https://www.apple.com.cn/shop/buy-iphone/') + '" target="_blank" rel="noopener">去官网抢购 →</a>'
+      : '';
     card.innerHTML =
       '<div class="title">' + p.capacity + ' ' + p.color + '</div>' +
       '<div class="price">官网 ¥' + p.price.toLocaleString() + '</div>' +
-      '<div class="stores">' + badges + '</div>';
+      '<div class="stores">' + badges + '</div>' + buyBtn;
     list.appendChild(card);
   });
 }
