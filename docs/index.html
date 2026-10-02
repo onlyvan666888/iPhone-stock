@@ -15,7 +15,7 @@
   .tabs button { flex: 1; border: none; background: none; padding: 12px 4px; font-size: 14px; color: #6e6e73; border-bottom: 2px solid transparent; }
   .tabs button.active { color: #0071e3; border-bottom-color: #0071e3; font-weight: 600; }
   .alertbar { display: none; background: #34c759; color: #fff; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; }
-  .alertbar.show { display: block; }
+  .alertbar.show { display: block; }数据每 5 分钟自动更新
   .toolbar { display: flex; gap: 8px; padding: 10px 16px; align-items: center; font-size: 13px; color: #6e6e73; }
   .toolbar .switch { margin-left: auto; display: flex; align-items: center; gap: 6px; }
   .switch input { width: 20px; height: 20px; }
@@ -44,12 +44,12 @@
 <div class="alertbar" id="alertbar">🔔 有货了！快去苹果官网预约取货</div>
 <div class="tabs" id="tabs"></div>
 <div class="toolbar">
-  <span>数据每 10 分钟自动更新</span>
+  <span>数据每 5 分钟自动更新</span>
   <label class="switch"><input type="checkbox" id="soundToggle"> 有货响铃</label>
 </div>
 <div class="list" id="list"><div class="loading">正在加载库存数据…</div></div>
 <div class="note">
-  说明：显示的是苹果官网「到店取货」的库存，由服务器每 10 分钟查询一次，不是每一秒的实时数据。下单前请以苹果官网为准。<br>
+  说明：显示的是苹果官网「到店取货」的库存，由服务器每 5 分钟查询一次，不是每一秒的实时数据。下单前请以苹果官网为准。<br>
   响铃提醒：打开开关后，页面每 2 分钟自动刷新一次，发现有货会响铃（请保持本页面打开）。
 </div>
 <script>
