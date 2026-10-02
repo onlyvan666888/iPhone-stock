@@ -1,0 +1,30 @@
+name: 查库存
+
+# 每 10 分钟查一次苹果官网到店取货库存，结果写到 docs/data.json 并提交
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:  # 允许在网页上手动点一下立即查一次
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 查询库存
+        run: python3 check.py
+        env:
+          BARK_KEY: ${{ secrets.BARK_KEY }}  # 可选: 没设就不推送
+
+      - name: 提交数据
+        run: |
+          git config user.name "stock-bot"
+          git config user.email "stock-bot@users.noreply.github.com"
+          git add docs/data.json docs/config.json
+          git diff --cached --quiet || git commit -m "更新库存数据"
+          git push
