@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>iPhone 到店取货库存</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; margin: 0; background: #f5f5f7; color: #1d1d1f; }
+  header { background: #000; color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 10; }
+  header h1 { font-size: 17px; margin: 0 0 4px; }
+  header .sub { font-size: 12px; color: #a1a1a6; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  header button { background: #2997ff; color: #fff; border: none; border-radius: 8px; padding: 6px 12px; font-size: 13px; }
+  .tabs { display: flex; background: #fff; border-bottom: 1px solid #e5e5ea; position: sticky; top: 76px; z-index: 9; }
+  .tabs button { flex: 1; border: none; background: none; padding: 12px 4px; font-size: 14px; color: #6e6e73; border-bottom: 2px solid transparent; }
+  .tabs button.active { color: #0071e3; border-bottom-color: #0071e3; font-weight: 600; }
+  .alertbar { display: none; background: #34c759; color: #fff; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; }
+  .alertbar.show { display: block; }
+  .toolbar { display: flex; gap: 8px; padding: 10px 16px; align-items: center; font-size: 13px; color: #6e6e73; }
+  .toolbar .switch { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+  .switch input { width: 20px; height: 20px; }
+  .list { padding: 0 12px 24px; }
+  .card { background: #fff; border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .card .title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .card .price { font-size: 13px; color: #6e6e73; margin-bottom: 8px; }
+  .stores { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge { font-size: 13px; padding: 6px 10px; border-radius: 20px; background: #f5f5f7; color: #6e6e73; }
+  .badge.ok { background: #e5f9ec; color: #12853a; font-weight: 600; }
+  .badge.no { background: #f5f5f7; color: #a1a1a6; }
+  .badge.err { background: #fdecea; color: #c22e2e; }
+  .note { padding: 0 16px 30px; font-size: 12px; color: #a1a1a6; line-height: 1.7; }
+  .loading { text-align: center; padding: 60px 20px; color: #a1a1a6; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🍎 iPhone 到店取货库存</h1>
+  <div class="sub">
+    <span id="updated">加载中…</span>
+    <button id="refreshBtn" onclick="loadData()">立即刷新</button>
+  </div>
+</header>
+<div class="alertbar" id="alertbar">🔔 有货了！快去苹果官网预约取货</div>
+<div class="tabs" id="tabs"></div>
+<div class="toolbar">
+  <span>数据每 10 分钟自动更新</span>
+  <label class="switch"><input type="checkbox" id="soundToggle"> 有货响铃</label>
+</div>
+<div class="list" id="list"><div class="loading">正在加载库存数据…</div></div>
+<div class="note">
+  说明：显示的是苹果官网「到店取货」的库存，由服务器每 10 分钟查询一次，不是每一秒的实时数据。下单前请以苹果官网为准。<br>
+  响铃提醒：打开开关后，页面每 2 分钟自动刷新一次，发现有货会响铃（请保持本页面打开）。
+</div>
+<script>
+let CONFIG = null, DATA = null, currentModel = 0;
+async function loadData() {
+  try {
+    const [c, d] = await Promise.all([
+      fetch('config.json').then(r => r.json()),
+      fetch('data.json').then(r => r.json())
+    ]);
+    CONFIG = c; DATA = d;
+    document.getElementById('updated').textContent = '更新于 ' + (d.updated_at_cn || '');
+    renderTabs();
+    renderList();
+    checkAlert();
+  } catch (e) {
+    document.getElementById('list').innerHTML =
+      '<div class="loading">加载失败，点右上角「立即刷新」重试</div>';
+  }
+}
+function renderTabs() {
+  const tabs = document.getElementById('tabs');
+  tabs.innerHTML = '';
+  CONFIG.models.forEach((m, i) => {
+    const b = document.createElement('button');
+    b.textContent = m.name.replace('iPhone ', '');
+    b.className = i === currentModel ? 'active' : '';
+    b.onclick = () => { currentModel = i; renderTabs(); renderList(); };
+    tabs.appendChild(b);
+  });
+}
+function statusBadge(store, part) {
+  if (store.error) return '<span class="badge err">查询失败</span>';
+  const s = store.parts[part];
+  if (!s || s.display === 'unknown') return '<span class="badge">未知</span>';
+  if (s.display === 'available') return '<span class="badge ok">✅ ' + store.store_name + '有货</span>';
+  if (s.display === 'ineligible') return '<span class="badge">不支持自提</span>';
+  return '<span class="badge no">' + store.store_name + '无货</span>';
+}
+function renderList() {
+  const model = CONFIG.models[currentModel];
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+  model.parts.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const badges = DATA.results.map(s => statusBadge(s, p.part)).join('');
+    card.innerHTML =
+      '<div class="title">' + p.capacity + ' ' + p.color + '</div>' +
+      '<div class="price">官网 ¥' + p.price.toLocaleString() + '</div>' +
+      '<div class="stores">' + badges + '</div>';
+    list.appendChild(card);
+  });
+}
+function anyAvailable() {
+  if (!DATA) return false;
+  return DATA.results.some(s => !s.error &&
+    Object.values(s.parts).some(p => p.display === 'available'));
+}
+function beep() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [0, 0.35, 0.7].forEach(t => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value = 880; o.type = 'sine';
+      const now = ctx.currentTime + t;
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.exponentialRampToValueAtTime(0.5, now + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+      o.start(now); o.stop(now + 0.32);
+    });
+  } catch (e) {}
+}
+function checkAlert() {
+  const on = document.getElementById('soundToggle').checked;
+  const has = anyAvailable();
+  document.getElementById('alertbar').classList.toggle('show', has);
+  if (on && has) beep();
+}
+document.getElementById('soundToggle').addEventListener('change', function() {
+  if (this.checked) beep();
+});
+loadData();
+setInterval(loadData, 120000);
+</script>
+</body>
+</html>
