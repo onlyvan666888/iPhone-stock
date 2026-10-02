@@ -1,0 +1,352 @@
+{
+  "models": [
+    {
+      "id": "iphone-duo",
+      "name": "iPhone Duo",
+      "parts": [
+        {
+          "part": "MK2M4CH/A",
+          "capacity": "256GB",
+          "color": "星空白",
+          "price": 15999
+        },
+        {
+          "part": "MK2N4CH/A",
+          "capacity": "256GB",
+          "color": "夜空蓝",
+          "price": 15999
+        },
+        {
+          "part": "MK2P4CH/A",
+          "capacity": "512GB",
+          "color": "星空白",
+          "price": 17999
+        },
+        {
+          "part": "MK2Q4CH/A",
+          "capacity": "512GB",
+          "color": "夜空蓝",
+          "price": 17999
+        },
+        {
+          "part": "MK2T4CH/A",
+          "capacity": "1TB",
+          "color": "星空白",
+          "price": 21499
+        },
+        {
+          "part": "MK2U4CH/A",
+          "capacity": "1TB",
+          "color": "夜空蓝",
+          "price": 21499
+        },
+        {
+          "part": "MK2V4CH/A",
+          "capacity": "2TB",
+          "color": "星空白",
+          "price": 26499
+        },
+        {
+          "part": "MK2W4CH/A",
+          "capacity": "2TB",
+          "color": "夜空蓝",
+          "price": 26499
+        }
+      ]
+    },
+    {
+      "id": "iphone-18-pro-max",
+      "name": "iPhone 18 Pro Max",
+      "parts": [
+        {
+          "part": "MJY94CH/A",
+          "capacity": "256GB",
+          "color": "冰川蓝",
+          "price": 10999
+        },
+        {
+          "part": "MJY84CH/A",
+          "capacity": "256GB",
+          "color": "勃艮第酒红",
+          "price": 10999
+        },
+        {
+          "part": "MJY74CH/A",
+          "capacity": "256GB",
+          "color": "银色",
+          "price": 10999
+        },
+        {
+          "part": "MJY64CH/A",
+          "capacity": "256GB",
+          "color": "黑色",
+          "price": 10999
+        },
+        {
+          "part": "MJYE4CH/A",
+          "capacity": "512GB",
+          "color": "冰川蓝",
+          "price": 12999
+        },
+        {
+          "part": "MJYD4CH/A",
+          "capacity": "512GB",
+          "color": "勃艮第酒红",
+          "price": 12999
+        },
+        {
+          "part": "MJYC4CH/A",
+          "capacity": "512GB",
+          "color": "银色",
+          "price": 12999
+        },
+        {
+          "part": "MJYA4CH/A",
+          "capacity": "512GB",
+          "color": "黑色",
+          "price": 12999
+        },
+        {
+          "part": "MJYJ4CH/A",
+          "capacity": "1TB",
+          "color": "冰川蓝",
+          "price": 16499
+        },
+        {
+          "part": "MJYH4CH/A",
+          "capacity": "1TB",
+          "color": "勃艮第酒红",
+          "price": 16499
+        },
+        {
+          "part": "MJYG4CH/A",
+          "capacity": "1TB",
+          "color": "银色",
+          "price": 16499
+        },
+        {
+          "part": "MJYF4CH/A",
+          "capacity": "1TB",
+          "color": "黑色",
+          "price": 16499
+        },
+        {
+          "part": "MJYN4CH/A",
+          "capacity": "2TB",
+          "color": "冰川蓝",
+          "price": 21499
+        },
+        {
+          "part": "MJYM4CH/A",
+          "capacity": "2TB",
+          "color": "勃艮第酒红",
+          "price": 21499
+        },
+        {
+          "part": "MJYL4CH/A",
+          "capacity": "2TB",
+          "color": "银色",
+          "price": 21499
+        },
+        {
+          "part": "MJYK4CH/A",
+          "capacity": "2TB",
+          "color": "黑色",
+          "price": 21499
+        }
+      ]
+    },
+    {
+      "id": "iphone-18-pro",
+      "name": "iPhone 18 Pro",
+      "parts": [
+        {
+          "part": "MJTA4CH/A",
+          "capacity": "256GB",
+          "color": "冰川蓝",
+          "price": 9999
+        },
+        {
+          "part": "MJT94CH/A",
+          "capacity": "256GB",
+          "color": "勃艮第酒红",
+          "price": 9999
+        },
+        {
+          "part": "MJT84CH/A",
+          "capacity": "256GB",
+          "color": "银色",
+          "price": 9999
+        },
+        {
+          "part": "MJT74CH/A",
+          "capacity": "256GB",
+          "color": "黑色",
+          "price": 9999
+        },
+        {
+          "part": "MJTF4CH/A",
+          "capacity": "512GB",
+          "color": "冰川蓝",
+          "price": 11999
+        },
+        {
+          "part": "MJTE4CH/A",
+          "capacity": "512GB",
+          "color": "勃艮第酒红",
+          "price": 11999
+        },
+        {
+          "part": "MJTD4CH/A",
+          "capacity": "512GB",
+          "color": "银色",
+          "price": 11999
+        },
+        {
+          "part": "MJTC4CH/A",
+          "capacity": "512GB",
+          "color": "黑色",
+          "price": 11999
+        },
+        {
+          "part": "MJTK4CH/A",
+          "capacity": "1TB",
+          "color": "冰川蓝",
+          "price": 15499
+        },
+        {
+          "part": "MJTJ4CH/A",
+          "capacity": "1TB",
+          "color": "勃艮第酒红",
+          "price": 15499
+        },
+        {
+          "part": "MJTH4CH/A",
+          "capacity": "1TB",
+          "color": "银色",
+          "price": 15499
+        },
+        {
+          "part": "MJTG4CH/A",
+          "capacity": "1TB",
+          "color": "黑色",
+          "price": 15499
+        },
+        {
+          "part": "MJTP4CH/A",
+          "capacity": "2TB",
+          "color": "冰川蓝",
+          "price": 20499
+        },
+        {
+          "part": "MJTN4CH/A",
+          "capacity": "2TB",
+          "color": "勃艮第酒红",
+          "price": 20499
+        },
+        {
+          "part": "MJTM4CH/A",
+          "capacity": "2TB",
+          "color": "银色",
+          "price": 20499
+        },
+        {
+          "part": "MJTL4CH/A",
+          "capacity": "2TB",
+          "color": "黑色",
+          "price": 20499
+        }
+      ]
+    },
+    {
+      "id": "iphone-air",
+      "name": "iPhone Air",
+      "parts": [
+        {
+          "part": "MG334CH/A",
+          "capacity": "256GB",
+          "color": "云白",
+          "price": 8799
+        },
+        {
+          "part": "MG364CH/A",
+          "capacity": "256GB",
+          "color": "天蓝",
+          "price": 8799
+        },
+        {
+          "part": "MG344CH/A",
+          "capacity": "256GB",
+          "color": "浅金",
+          "price": 8799
+        },
+        {
+          "part": "MG314CH/A",
+          "capacity": "256GB",
+          "color": "深空黑",
+          "price": 8799
+        },
+        {
+          "part": "MG394CH/A",
+          "capacity": "512GB",
+          "color": "云白",
+          "price": 10799
+        },
+        {
+          "part": "MG3C4CH/A",
+          "capacity": "512GB",
+          "color": "天蓝",
+          "price": 10799
+        },
+        {
+          "part": "MG3A4CH/A",
+          "capacity": "512GB",
+          "color": "浅金",
+          "price": 10799
+        },
+        {
+          "part": "MG374CH/A",
+          "capacity": "512GB",
+          "color": "深空黑",
+          "price": 10799
+        },
+        {
+          "part": "MG3E4CH/A",
+          "capacity": "1TB",
+          "color": "云白",
+          "price": 14299
+        },
+        {
+          "part": "MG3G4CH/A",
+          "capacity": "1TB",
+          "color": "天蓝",
+          "price": 14299
+        },
+        {
+          "part": "MG3F4CH/A",
+          "capacity": "1TB",
+          "color": "浅金",
+          "price": 14299
+        },
+        {
+          "part": "MG3D4CH/A",
+          "capacity": "1TB",
+          "color": "深空黑",
+          "price": 14299
+        }
+      ]
+    }
+  ],
+  "stores": [
+    {
+      "number": "R534",
+      "name": "中街大悦城",
+      "city": "沈阳"
+    },
+    {
+      "number": "R576",
+      "name": "沈阳万象城",
+      "city": "沈阳"
+    }
+  ]
+}
