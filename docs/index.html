@@ -10,7 +10,7 @@
   header { background: #000; color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 10; }
   header h1 { font-size: 17px; margin: 0 0 4px; }
   header .sub { font-size: 12px; color: #a1a1a6; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-  header button { background: #2997ff; color: #fff; border: none; border-radius: 8px; padding: 6px 12px; font-size: 13px; }
+  header button { background: #2997ff; color: #fff; border: none; border-radius: 8px; padding: 6px 12px; font-size: 13px; } header button:disabled { opacity: .55; }
   .tabs { display: flex; background: #fff; border-bottom: 1px solid #e5e5ea; position: sticky; top: 76px; z-index: 9; }
   .tabs button { flex: 1; border: none; background: none; padding: 12px 4px; font-size: 14px; color: #6e6e73; border-bottom: 2px solid transparent; }
   .tabs button.active { color: #0071e3; border-bottom-color: #0071e3; font-weight: 600; }
@@ -38,7 +38,7 @@
   <h1>🍎 iPhone 到店取货库存</h1>
   <div class="sub">
     <span id="updated">加载中…</span>
-    <button id="refreshBtn" onclick="loadData()">立即刷新</button>
+    <button id="refreshBtn" onclick="loadData(true)">立即刷新</button>
   </div>
 </header>
 <div class="alertbar" id="alertbar">🔔 有货了！快去苹果官网预约取货</div>
@@ -61,19 +61,28 @@ const BUY_URLS = {
   'iphone-18-pro-max': 'https://www.apple.com.cn/shop/buy-iphone/iphone-18-pro',
   'iphone-air': 'https://www.apple.com.cn/shop/buy-iphone/iphone-air'
 };
-async function loadData() {
+async function loadData(manual) {
+ const btn = document.getElementById('refreshBtn');
+ if (manual) { btn.textContent = '刷新中…'; btn.disabled = true; }
   try {
-    const [c, d] = await Promise.all([
-      fetch('config.json').then(r => r.json()),
-      fetch('data.json').then(r => r.json())
+    const ts = '?_=' + Date.now(); // 防止浏览器或 CDN 拿到缓存的旧数据
+   const [c, d] = await Promise.all([
+      fetch('config.json' + ts).then(r => r.json()),
+      fetch('data.json' + ts).then(r => r.json())
     ]);
     CONFIG = c; DATA = d;
-    document.getElementById('updated').textContent = '更新于 ' + (d.updated_at_cn || '');
+    document.getElementById('updated').textContent =
+     '更新于 ' + (d.updated_at_cn || '') + (manual ? ' · 刚刚检查过' : '');
     renderTabs();
     renderList();
     checkAlert();
   } catch (e) {
-    document.getElementById('list').innerHTML =
+    document.getElementById('list').innerHTML = '<div class="loading">加载失败，点右上角「立即刷新」重试</div>';
+     '<div class="loading">加载失败，点右上角「立即刷新」重试</div>';
+     '<div class="loading">加载失败，点右上角「立即刷新」重试</div>';
+   } finally {
+   if (manual) { btn.textContent = '立即刷新'; btn.disabled = false; }  }}
+   }}
       '<div class="loading">加载失败，点右上角「立即刷新」重试</div>';
   }
 }
@@ -145,8 +154,8 @@ function checkAlert() {
 document.getElementById('soundToggle').addEventListener('change', function() {
   if (this.checked) beep();
 });
-loadData();
-setInterval(loadData, 120000);
+loadData(false);
+setInterval(function() { loadData(false); }, 120000);
 </script>
 </body>
 </html>
