@@ -10,12 +10,13 @@
   header { background: #000; color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 10; }
   header h1 { font-size: 17px; margin: 0 0 4px; }
   header .sub { font-size: 12px; color: #a1a1a6; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-  header button { background: #2997ff; color: #fff; border: none; border-radius: 8px; padding: 6px 12px; font-size: 13px; } header button:disabled { opacity: .55; }
+  header button { background: #2997ff; color: #fff; border: none; border-radius: 8px; padding: 6px 12px; font-size: 13px; }
+  header button:disabled { opacity: .55; }
   .tabs { display: flex; background: #fff; border-bottom: 1px solid #e5e5ea; position: sticky; top: 76px; z-index: 9; }
   .tabs button { flex: 1; border: none; background: none; padding: 12px 4px; font-size: 14px; color: #6e6e73; border-bottom: 2px solid transparent; }
   .tabs button.active { color: #0071e3; border-bottom-color: #0071e3; font-weight: 600; }
   .alertbar { display: none; background: #34c759; color: #fff; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; }
-  .alertbar.show { display: block; }数据每 5 分钟自动更新
+  .alertbar.show { display: block; }
   .toolbar { display: flex; gap: 8px; padding: 10px 16px; align-items: center; font-size: 13px; color: #6e6e73; }
   .toolbar .switch { margin-left: auto; display: flex; align-items: center; gap: 6px; }
   .switch input { width: 20px; height: 20px; }
@@ -52,8 +53,10 @@
   说明：显示的是苹果官网「到店取货」的库存，由服务器每 5 分钟查询一次，不是每一秒的实时数据。下单前请以苹果官网为准。<br>
   响铃提醒：打开开关后，页面每 2 分钟自动刷新一次，发现有货会响铃（请保持本页面打开）。
 </div>
+
 <script>
 let CONFIG = null, DATA = null, currentModel = 0;
+
 // 各机型官网购买页（Pro 和 Pro Max 共用一个购买页）
 const BUY_URLS = {
   'iphone-duo': 'https://www.apple.com.cn/shop/buy-iphone/iphone-duo',
@@ -61,31 +64,30 @@ const BUY_URLS = {
   'iphone-18-pro-max': 'https://www.apple.com.cn/shop/buy-iphone/iphone-18-pro',
   'iphone-air': 'https://www.apple.com.cn/shop/buy-iphone/iphone-air'
 };
+
 async function loadData(manual) {
- const btn = document.getElementById('refreshBtn');
- if (manual) { btn.textContent = '刷新中…'; btn.disabled = true; }
+  const btn = document.getElementById('refreshBtn');
+  if (manual) { btn.textContent = '刷新中…'; btn.disabled = true; }
   try {
     const ts = '?_=' + Date.now(); // 防止浏览器或 CDN 拿到缓存的旧数据
-   const [c, d] = await Promise.all([
+    const [c, d] = await Promise.all([
       fetch('config.json' + ts).then(r => r.json()),
-      fetch('data.json' + ts).then(r => r.json())]);
+      fetch('data.json' + ts).then(r => r.json())
     ]);
     CONFIG = c; DATA = d;
     document.getElementById('updated').textContent =
-     '更新于 ' + (d.updated_at_cn || '') + (manual ? ' · 刚刚检查过' : '');
+      '更新于 ' + (d.updated_at_cn || '') + (manual ? ' · 刚刚检查过' : '');
     renderTabs();
     renderList();
     checkAlert();
   } catch (e) {
-    document.getElementById('list').innerHTML = '<div class="loading">加载失败，点右上角「立即刷新」重试</div>';
-     '<div class="loading">加载失败，点右上角「立即刷新」重试</div>';
-     '<div class="loading">加载失败，点右上角「立即刷新」重试</div>';
-   } finally {
-   if (manual) { btn.textContent = '立即刷新'; btn.disabled = false; }  }}
-   }}
+    document.getElementById('list').innerHTML =
       '<div class="loading">加载失败，点右上角「立即刷新」重试</div>';
+  } finally {
+    if (manual) { btn.textContent = '立即刷新'; btn.disabled = false; }
   }
 }
+
 function renderTabs() {
   const tabs = document.getElementById('tabs');
   tabs.innerHTML = '';
@@ -97,6 +99,7 @@ function renderTabs() {
     tabs.appendChild(b);
   });
 }
+
 function statusBadge(store, part) {
   if (store.error) return '<span class="badge err">查询失败</span>';
   const s = store.parts[part];
@@ -105,6 +108,7 @@ function statusBadge(store, part) {
   if (s.display === 'ineligible') return '<span class="badge">不支持自提</span>';
   return '<span class="badge no">' + store.store_name + '无货</span>';
 }
+
 function renderList() {
   const model = CONFIG.models[currentModel];
   const list = document.getElementById('list');
@@ -125,11 +129,13 @@ function renderList() {
     list.appendChild(card);
   });
 }
+
 function anyAvailable() {
   if (!DATA) return false;
   return DATA.results.some(s => !s.error &&
     Object.values(s.parts).some(p => p.display === 'available'));
 }
+
 function beep() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -145,17 +151,21 @@ function beep() {
     });
   } catch (e) {}
 }
+
 function checkAlert() {
   const on = document.getElementById('soundToggle').checked;
   const has = anyAvailable();
   document.getElementById('alertbar').classList.toggle('show', has);
   if (on && has) beep();
 }
+
+// 用户亲手打开过开关后，浏览器才允许响铃
 document.getElementById('soundToggle').addEventListener('change', function() {
   if (this.checked) beep();
 });
+
 loadData(false);
-setInterval(function() { loadData(false); }, 120000);
+setInterval(function() { loadData(false); }, 120000);  // 每 2 分钟自动刷新
 </script>
 </body>
 </html>
