@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-03T20:00:20+08:00",
- "updated_at_cn": "10月03日 20:00",
+ "updated_at": "2026-10-03T20:05:19+08:00",
+ "updated_at_cn": "10月03日 20:05",
  "results": [
   {
    "store_number": "R534",
@@ -169,23 +169,23 @@
     },
     "MG334CH/A": {
      "display": "available",
-     "quote": "今天可取货"
+     "quote": "明天可取货"
     },
     "MG364CH/A": {
      "display": "available",
-     "quote": "今天可取货"
+     "quote": "明天可取货"
     },
     "MG344CH/A": {
      "display": "available",
-     "quote": "今天可取货"
+     "quote": "明天可取货"
     },
     "MG314CH/A": {
      "display": "available",
-     "quote": "今天可取货"
+     "quote": "明天可取货"
     },
     "MG394CH/A": {
      "display": "available",
-     "quote": "今天可取货"
+     "quote": "明天可取货"
     },
     "MG3C4CH/A": {
      "display": "unavailable",
@@ -193,7 +193,7 @@
     },
     "MG3A4CH/A": {
      "display": "available",
-     "quote": "今天可取货"
+     "quote": "明天可取货"
     },
     "MG374CH/A": {
      "display": "unavailable",
@@ -201,7 +201,7 @@
     },
     "MG3E4CH/A": {
      "display": "available",
-     "quote": "今天可取货"
+     "quote": "明天可取货"
     },
     "MG3G4CH/A": {
      "display": "unavailable",
@@ -209,7 +209,7 @@
     },
     "MG3F4CH/A": {
      "display": "available",
-     "quote": "今天可取货"
+     "quote": "明天可取货"
     },
     "MG3D4CH/A": {
      "display": "unavailable",
