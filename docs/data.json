@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-03T22:36:47+08:00",
- "updated_at_cn": "10月03日 22:36",
+ "updated_at": "2026-10-03T22:42:45+08:00",
+ "updated_at_cn": "10月03日 22:42",
  "results": [
   {
    "store_number": "R534",
@@ -402,37 +402,9 @@
     "MG394CH/A": {
      "display": "available",
      "quote": "明天可取货"
-    },
-    "MG3C4CH/A": {
-     "display": "unavailable",
-     "quote": "暂无供应"
-    },
-    "MG3A4CH/A": {
-     "display": "unavailable",
-     "quote": "暂无供应"
-    },
-    "MG374CH/A": {
-     "display": "unavailable",
-     "quote": "暂无供应"
-    },
-    "MG3E4CH/A": {
-     "display": "unavailable",
-     "quote": "暂无供应"
-    },
-    "MG3G4CH/A": {
-     "display": "available",
-     "quote": "明天可取货"
-    },
-    "MG3F4CH/A": {
-     "display": "unavailable",
-     "quote": "暂无供应"
-    },
-    "MG3D4CH/A": {
-     "display": "available",
-     "quote": "明天可取货"
     }
    },
-   "error": null
+   "error": "HTTP Error 541: Unknown"
   }
  ]
 }
