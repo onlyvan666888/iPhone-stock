@@ -1,14 +1,21 @@
 name: 查库存
 
-# 每 10 分钟查一次苹果官网到店取货库存，结果写到 docs/data.json 并提交
+# 常驻循环: 任务启动后不退出, 每 5 分钟查一次苹果官网到店取货库存,
+# 结果写到 docs/data.json 并提交。schedule 只是看门狗(实际约每 20 分钟触发一次),
+# 新运行启动会自动取消旧循环, 保证同一时间只有一个循环在跑。
 on:
   schedule:
     - cron: '*/5 * * * *'
-  workflow_dispatch:  # 允许在网页上手动点一下立即查一次
+  workflow_dispatch:  # 网页上手动点一下, 立刻开始一轮循环
+
+concurrency:
+  group: stock-check
+  cancel-in-progress: true
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 360  # GitHub 单次运行上限 6 小时, 到点自动结束等下一次看门狗叫醒
     steps:
       - uses: actions/checkout@v4
 
@@ -16,15 +23,19 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: 查询库存
-        run: python3 check.py
-        env:
-          BARK_KEY: ${{ secrets.BARK_KEY }}  # 可选: 没设就不推送
-
-      - name: 提交数据
+      - name: 循环查库存(每5分钟)
         run: |
           git config user.name "stock-bot"
           git config user.email "stock-bot@users.noreply.github.com"
-          git add docs/data.json docs/config.json
-          git diff --cached --quiet || git commit -m "更新库存数据"
-          git push
+          for i in $(seq 1 72); do
+            START=$(date +%s)
+            python3 check.py || true
+            git add docs/data.json docs/config.json
+            git diff --cached --quiet || git commit -m "库存更新 $(date '+%m-%d %H:%M')"
+            git push || true
+            ELAPSED=$(( $(date +%s) - START ))
+            REST=$(( 300 - ELAPSED ))
+            if [ "$REST" -gt 0 ]; then sleep "$REST"; fi
+          done
+        env:
+          BARK_KEY: ${{ secrets.BARK_KEY }}  # 可选: 没设就不推送
