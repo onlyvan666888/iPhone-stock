@@ -74,34 +74,40 @@ def main():
             'parts': {},
             'error': None,
         }
-        try:
-            for bi, batch in enumerate(batches):
-                query = [('pl', 'true'), ('mts.0', 'regular'), ('store', num)]
-                query += [(f'parts.{i}', p) for i, p in enumerate(batch)]
-                url = BASE + '/shop/retail/pickup-message?' + urllib.parse.urlencode(query)
-                raw = fetch(url, headers, opener)
-                data = json.loads(raw)
-                body = data.get('body', {})
-                if body.get('errorMessage'):
-                    raise RuntimeError(str(body['errorMessage'])[:200])
-                stores = body.get('stores') or \
-                    body.get('content', {}).get('pickupMessage', {}).get('stores', [])
-                st = next((x for x in stores if x.get('storeNumber') == num), None)
-                if not st:
-                    raise RuntimeError('接口没有返回该门店的数据')
-                pa = st.get('partsAvailability', {}) or {}
-                for p in batch:
-                    info = pa.get(p, {})
-                    entry['parts'][p] = {
-                        'display': info.get('pickupDisplay', 'unknown'),
-                        'quote': info.get('pickupSearchQuote', ''),
-                    }
-                entry['store_name'] = st.get('storeName', entry['store_name'])
-                time.sleep(2)
-            print(f'{num} {entry["store_name"]}: 查询成功')
-        except Exception as e:
-            entry['error'] = str(e)[:200]
-            print(f'{num} 查询失败: {e}', file=sys.stderr)
+        for attempt in range(2):  # 失败时 60 秒后重试一次, 应对苹果偶发拦截(541)
+            try:
+                for bi, batch in enumerate(batches):
+                    query = [('pl', 'true'), ('mts.0', 'regular'), ('store', num)]
+                    query += [(f'parts.{i}', p) for i, p in enumerate(batch)]
+                    url = BASE + '/shop/retail/pickup-message?' + urllib.parse.urlencode(query)
+                    raw = fetch(url, headers, opener)
+                    data = json.loads(raw)
+                    body = data.get('body', {})
+                    if body.get('errorMessage'):
+                        raise RuntimeError(str(body['errorMessage'])[:200])
+                    stores = body.get('stores') or \
+                        body.get('content', {}).get('pickupMessage', {}).get('stores', [])
+                    st = next((x for x in stores if x.get('storeNumber') == num), None)
+                    if not st:
+                        raise RuntimeError('接口没有返回该门店的数据')
+                    pa = st.get('partsAvailability', {}) or {}
+                    for p in batch:
+                        info = pa.get(p, {})
+                        entry['parts'][p] = {
+                            'display': info.get('pickupDisplay', 'unknown'),
+                            'quote': info.get('pickupSearchQuote', ''),
+                        }
+                    entry['store_name'] = st.get('storeName', entry['store_name'])
+                    time.sleep(2)
+                print(f'{num} {entry["store_name"]}: 查询成功')
+                break
+            except Exception as e:
+                if attempt == 0:
+                    print(f'{num} 首次查询失败, 60秒后重试: {e}', file=sys.stderr)
+                    time.sleep(60)
+                else:
+                    entry['error'] = str(e)[:200]
+                    print(f'{num} 查询失败: {e}', file=sys.stderr)
         results.append(entry)
         time.sleep(3)  # 门店之间停 3 秒，别把苹果问烦了
 
