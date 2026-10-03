@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-04T00:18:12+08:00",
- "updated_at_cn": "10月04日 00:18",
+ "updated_at": "2026-10-04T00:23:02+08:00",
+ "updated_at_cn": "10月04日 00:23",
  "results": [
   {
    "store_number": "R534",
@@ -320,16 +320,16 @@
      "quote": "暂无供应"
     },
     "MJTA4CH/A": {
-     "display": "ineligible",
-     "quote": "暂无供应"
+     "display": "available",
+     "quote": "今天可取货"
     },
     "MJT94CH/A": {
-     "display": "ineligible",
-     "quote": "暂无供应"
+     "display": "available",
+     "quote": "今天可取货"
     },
     "MJT84CH/A": {
-     "display": "ineligible",
-     "quote": "暂无供应"
+     "display": "available",
+     "quote": "今天可取货"
     },
     "MJT74CH/A": {
      "display": "available",
@@ -356,16 +356,16 @@
      "quote": "今天可取货"
     },
     "MJTJ4CH/A": {
-     "display": "ineligible",
-     "quote": "暂无供应"
+     "display": "available",
+     "quote": "今天可取货"
     },
     "MJTH4CH/A": {
-     "display": "ineligible",
-     "quote": "暂无供应"
+     "display": "available",
+     "quote": "今天可取货"
     },
     "MJTG4CH/A": {
-     "display": "ineligible",
-     "quote": "暂无供应"
+     "display": "available",
+     "quote": "今天可取货"
     },
     "MJTP4CH/A": {
      "display": "available",
