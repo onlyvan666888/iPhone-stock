@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-03T10:21:16+08:00",
- "updated_at_cn": "10月03日 10:21",
+ "updated_at": "2026-10-03T10:49:02+08:00",
+ "updated_at_cn": "10月03日 10:49",
  "results": [
   {
    "store_number": "R534",
@@ -76,8 +76,8 @@
      "quote": "暂无供应"
     },
     "MJYH4CH/A": {
-     "display": "unavailable",
-     "quote": "暂无供应"
+     "display": "available",
+     "quote": "今天可取货"
     },
     "MJYG4CH/A": {
      "display": "available",
