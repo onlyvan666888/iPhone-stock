@@ -29,6 +29,9 @@ jobs:
           git config user.email "stock-bot@users.noreply.github.com"
           for i in $(seq 1 72); do
             START=$(date +%s)
+            # 先同步远端: 避免本地落后导致 push 被拒, 脚本更新也能即时生效
+            git fetch origin || true
+            git reset --hard origin/main || true
             python3 check.py || true
             git add docs/data.json docs/config.json
             git diff --cached --quiet || git commit -m "库存更新 $(date '+%m-%d %H:%M')"
